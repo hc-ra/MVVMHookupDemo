@@ -90,6 +90,7 @@
       <DependentUpon>CustomerListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Customers\CustomerListViewModel.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Services\CustomersRepository.cs" />
     <Compile Include="Services\ICustomersRepository.cs" />

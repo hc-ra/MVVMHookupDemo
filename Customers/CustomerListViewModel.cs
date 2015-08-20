@@ -14,6 +14,7 @@ namespace MVVMHookupDemo.Customers
 	public class CustomerListViewModel
 	{
 		private ICustomersRepository _repo = new CustomersRepository();
+		private ObservableCollection<Customer> _customers;
 		public CustomerListViewModel()
 		{
 			if(DesignerProperties.GetIsInDesignMode(
@@ -22,6 +23,16 @@ namespace MVVMHookupDemo.Customers
 			Customers = new ObservableCollection<Customer>(_repo.GetCustomersAsync().Result);
 			Debug.WriteLine(Customers.Count);
 		}
-		public ObservableCollection<Customer> Customers { get; set; }
+		public ObservableCollection<Customer> Customers
+		{
+			get
+			{
+				return _customers;
+			}
+			set
+			{
+				_customers = value;
+			}
+		}
 	}
 }
