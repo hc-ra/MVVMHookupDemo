@@ -8,6 +8,8 @@ using Zza.Data;
 using MVVMHookupDemo.Services;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Input;
+using System.Runtime.CompilerServices;
 
 namespace MVVMHookupDemo.Customers
 {
@@ -17,12 +19,36 @@ namespace MVVMHookupDemo.Customers
 		private ObservableCollection<Customer> _customers;
 		public CustomerListViewModel()
 		{
-			if(DesignerProperties.GetIsInDesignMode(
+			if (DesignerProperties.GetIsInDesignMode(
 				new System.Windows.DependencyObject()))
 				return;
 			Customers = new ObservableCollection<Customer>(_repo.GetCustomersAsync().Result);
-			Debug.WriteLine(Customers.Count);
+			DeleteCommand = new RelayCommand(OnDelete, CanDelete);
 		}
+
+		private bool CanDelete()
+		{
+			return SelectedCustomer != null;
+		}
+
+		private void OnDelete()
+		{
+			Customers.Remove(SelectedCustomer);
+		}
+
+		public RelayCommand DeleteCommand { get; private set; }
+		private Customer _selectedCustomer;
+
+		public Customer SelectedCustomer
+		{
+			get { return _selectedCustomer; }
+			set
+			{
+				_selectedCustomer = value;
+				DeleteCommand.RaiseCanExecuteChanged();
+			}
+		}
+
 		public ObservableCollection<Customer> Customers
 		{
 			get
