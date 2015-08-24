@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Zza.Data;
 
 namespace MVVMHookupDemo.Customers
 {
@@ -24,5 +25,12 @@ namespace MVVMHookupDemo.Customers
 		{
 			InitializeComponent();
 		}
+
+		private void OnChangeCustomer(object sender, RoutedEventArgs e)
+		{
+			var cust = customerDataGrid.SelectedItem as Customer;
+			cust.FirstName = "Changed in bg";
+		}
+
 	}
 }

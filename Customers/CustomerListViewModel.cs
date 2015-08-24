@@ -13,17 +13,21 @@ using System.Runtime.CompilerServices;
 
 namespace MVVMHookupDemo.Customers
 {
-	public class CustomerListViewModel
+	public class CustomerListViewModel : INotifyPropertyChanged
 	{
 		private ICustomersRepository _repo = new CustomersRepository();
 		private ObservableCollection<Customer> _customers;
 		public CustomerListViewModel()
 		{
+			DeleteCommand = new RelayCommand(OnDelete, CanDelete);
+		}
+
+		public async void LoadCustomers()
+		{
 			if (DesignerProperties.GetIsInDesignMode(
 				new System.Windows.DependencyObject()))
 				return;
-			Customers = new ObservableCollection<Customer>(_repo.GetCustomersAsync().Result);
-			DeleteCommand = new RelayCommand(OnDelete, CanDelete);
+			Customers = new ObservableCollection<Customer>(await _repo.GetCustomersAsync());
 		}
 
 		private bool CanDelete()
@@ -57,8 +61,14 @@ namespace MVVMHookupDemo.Customers
 			}
 			set
 			{
-				_customers = value;
+				if (_customers != value)
+				{
+					_customers = value;
+					PropertyChanged(this, new PropertyChangedEventArgs("Customers"));
+				}
 			}
 		}
+
+		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 	}
 }

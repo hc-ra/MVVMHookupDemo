@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Customers="clr-namespace:MVVMHookupDemo.Customers"
         xmlns:local="clr-namespace:MVVMHookupDemo"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Title="MainWindow" Height="416" Width="525">
     <Window.DataContext>
         <local:MainWindowViewModel/>
@@ -12,8 +13,17 @@
             <Customers:CustomerListView />
         </DataTemplate>
     </Window.Resources>
-        <Grid>
-        <ContentControl Content="{Binding CurrentViewModel}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ContentControl>
+            <i:Interaction.Behaviors>
+                <local:ShowNotificationMessageBehavior Message="{Binding NotificationMessage}"/>
+            </i:Interaction.Behaviors>
+        </ContentControl>
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
         <!--<Customers:CustomerListView Margin="0"/>-->
         <!--<Customers:CustomerDetailView HorizontalAlignment="Left" Height="73" Margin="10,260,0,0" VerticalAlignment="Top" Width="248"/>-->
     </Grid>
